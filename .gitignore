@@ -24,3 +24,4 @@ hs_err_pid*
 
 /job4j_dreamjob.iml
 /.idea/
+/target/
