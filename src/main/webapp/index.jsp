@@ -24,24 +24,37 @@
     <title>Работа мечты!</title>
 </head>
 <body>
-<div class="container">
+<%-- diapason: pt-0 ==>> pt-5 --%>
+<div class="container pt-3">
+
     <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Объявления</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% for (Post post : Store.instOf().findAll()) { %>
-            <tr>
-                <td><%= post.getName()%></td>
-                <td><%= post.getDescription()%></td>
-                <td><%= post.getCreated()%></td>
-            </tr>
-            <% } %>
-            </tbody>
-        </table>
+        <div class="card" style="width:100%">
+            <div class="card-header">Вакансии
+            </div>
+            <div class="card-body">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Объявления</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <% for (Post post : Store.instOf().findAll()) { %>
+                    <tr>
+                        <td><%= post.getName()%>
+                        </td>
+                        <td><%= post.getDescription()%>
+                        </td>
+                        <td><%= post.getCreated()%>
+                        </td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 </body>
