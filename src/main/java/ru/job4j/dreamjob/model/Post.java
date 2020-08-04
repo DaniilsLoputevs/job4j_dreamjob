@@ -8,6 +8,13 @@ public class Post {
     private String description;
     private String created;
 
+    public Post(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.description = null;
+        this.created = null;
+    }
+
     public Post(int id, String name, String description, String created) {
         this.id = id;
         this.name = name;
