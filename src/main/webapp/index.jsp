@@ -28,10 +28,13 @@
         <ul class="nav">
             <li class="nav-item">
                 <%-- request.getContextPath() == get link to this page --%>
-                <a class="nav-link" href="<%=request.getContextPath()%>/post/posts.jsp">Вакансии</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/candidates.jsp">Кандидаты</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/post/posts.do">Вакансии</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/candidates.do">Кандидаты</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить Вакансию</a>

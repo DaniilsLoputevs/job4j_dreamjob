@@ -36,10 +36,13 @@
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/post/posts.jsp">Вакансии</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/candidates.jsp">Кандидаты</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/post/posts.do">Вакансии</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/candidates.do">Кандидаты</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить Вакансию</a>
@@ -60,7 +63,7 @@
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidate/save?id=<%=can.getId()%>" method="post">
+                <form action="<%=request.getContextPath()%>/candidate/candidates.do?id=<%=can.getId()%>" method="post">
                     <div class="form-group">
                         <label>Имя</label>
                         <input type="text" class="form-control" name="name" value="<%=can.getName()%>">
