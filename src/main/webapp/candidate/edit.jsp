@@ -1,5 +1,5 @@
 <%@ page import="ru.job4j.dreamjob.model.Candidate" %>
-<%@ page import="ru.job4j.dreamjob.store.MemStore" %>
+<%@ page import="ru.job4j.dreamjob.store.PsqlStore" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!doctype html>
 <html lang="en">
@@ -29,7 +29,7 @@
     String id = request.getParameter("id");
     Candidate can = new Candidate(0, "");
     if (id != null) {
-        can = MemStore.instOf().findByIdCandidate(Integer.parseInt(id));
+        can = PsqlStore.instOf().findByIdCandidate(Integer.parseInt(id));
     }
 %>
 <div class="container pt-3">
