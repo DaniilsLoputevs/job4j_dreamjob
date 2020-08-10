@@ -8,6 +8,7 @@
     <display-name>Archetype Created Web Application</display-name>
 
     <!-- main programm servlets -->
+    <!-- index jsp servlet -->
     <servlet>
         <servlet-name>IndexServlet</servlet-name>
         <servlet-class>ru.job4j.dreamjob.servlet.IndexServlet</servlet-class>
@@ -16,7 +17,7 @@
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/index.do</url-pattern>
     </servlet-mapping>
-
+    <!-- post jsp servlet -->
     <servlet>
         <servlet-name>PostServlet</servlet-name>
         <servlet-class>ru.job4j.dreamjob.servlet.PostServlet</servlet-class>
@@ -25,7 +26,7 @@
         <servlet-name>PostServlet</servlet-name>
         <url-pattern>/post/posts.do</url-pattern>
     </servlet-mapping>
-
+    <!-- candidate jsp servlet -->
     <servlet>
         <servlet-name>CandidateServlet</servlet-name>
         <servlet-class>ru.job4j.dreamjob.servlet.CandidateServlet</servlet-class>
@@ -33,5 +34,34 @@
     <servlet-mapping>
         <servlet-name>CandidateServlet</servlet-name>
         <url-pattern>/candidate/candidates.do</url-pattern>
+    </servlet-mapping>
+    <!-- upload jsp servlet -->
+    <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.image.UploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/image/upload</url-pattern>
+    </servlet-mapping>
+
+    <!-- download jsp servlet -->
+    <servlet>
+        <servlet-name>DownloadServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.image.DownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DownloadServlet</servlet-name>
+        <url-pattern>/image/download</url-pattern>
+    </servlet-mapping>
+
+    <!-- download jsp servlet -->
+    <servlet>
+        <servlet-name>DeleteServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.image.DeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteServlet</servlet-name>
+        <url-pattern>/image/delete</url-pattern>
     </servlet-mapping>
 </web-app>
