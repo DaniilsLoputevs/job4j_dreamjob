@@ -1,9 +1,10 @@
-package ru.job4j.dreamjob.servlet.image;
+package ru.job4j.dreamjob.servlet.image_example;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import ru.job4j.dreamjob.image.ImageControl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -12,13 +13,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UploadServlet extends HttpServlet {
-    /* get IMG */
+    /* show imgs on swb-page IMG */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -50,13 +50,9 @@ public class UploadServlet extends HttpServlet {
             }
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                    File file = new File(folder + File.separator + item.getName());
-
-//                    logString.append(file.getAbsolutePath()).append("\r\n");
-
-                    try (FileOutputStream out = new FileOutputStream(file)) {
-                        out.write(item.getInputStream().readAllBytes());
-                    }
+                    String imgSavePath = folder + File.separator + item.getName();
+                    ImageControl.uploadImgToServ(imgSavePath, item);
+                    ImageControl.uploadImgToPsql(item.getName());
                 }
             }
         } catch (FileUploadException e) {

@@ -38,7 +38,7 @@
     <!-- upload jsp servlet -->
     <servlet>
         <servlet-name>UploadServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.image.UploadServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.servlet.image_example.UploadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UploadServlet</servlet-name>
@@ -48,20 +48,30 @@
     <!-- download jsp servlet -->
     <servlet>
         <servlet-name>DownloadServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.image.DownloadServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.servlet.image_example.DownloadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DownloadServlet</servlet-name>
         <url-pattern>/image/download</url-pattern>
     </servlet-mapping>
 
-    <!-- download jsp servlet -->
+    <!-- Delete jsp servlet -->
     <servlet>
         <servlet-name>DeleteServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.image.DeleteServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.servlet.image_example.DeleteServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteServlet</servlet-name>
         <url-pattern>/image/delete</url-pattern>
+    </servlet-mapping>
+
+    <!-- CandidateImg servlet -->
+    <servlet>
+        <servlet-name>CandidateImgServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.CandidateImgServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CandidateImgServlet</servlet-name>
+        <url-pattern>/image/canImg</url-pattern>
     </servlet-mapping>
 </web-app>

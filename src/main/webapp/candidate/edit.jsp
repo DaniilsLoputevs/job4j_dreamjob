@@ -1,6 +1,8 @@
 <%@ page import="ru.job4j.dreamjob.model.Candidate" %>
+<%@ page import="ru.job4j.dreamjob.psql_db_connect.PsqlImg" %>
 <%@ page import="ru.job4j.dreamjob.store.PsqlStore" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -31,8 +33,10 @@
     if (id != null) {
         can = PsqlStore.instOf().findByIdCandidate(Integer.parseInt(id));
     }
+    byte[] bytes = PsqlImg.fromBaseById(1);
 %>
 <div class="container pt-3">
+
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
@@ -63,13 +67,46 @@
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/candidate/candidates.do?id=<%=can.getId()%>" method="post">
+<%--                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="application/x-www-form-urlencoded">--%>
+                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="multipart/form-data">
+<%--                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="text/plain">--%>
                     <div class="form-group">
-                        <label>Имя</label>
-                        <input type="text" class="form-control" name="name" value="<%=can.getName()%>">
+                        <label>Имя
+                            <input type="text" class="form-control" name="name" value="<%=can.getName()%>">
+                        </label>
+                    </div>
+                </form>
+                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <p></p>
+                        <label>Изображение</label>
+<%--                        <img src="<c:url value='/image/download?name=0tB82-LbU8U.jpg'/>" width="100px" height="100px"/>--%>
+                        <img src="<c:url value='/image/canImg?id='/><%=can.getImgId()%>" width="100px" height="100px"/>
+                        <p></p>
+
+                    <h2>Upload image</h2>
+                    <input type="file" name="img">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
+
+
+
+<%--                        <h2>Upload image</h2>--%>
+
+
+<%--                        <form action="<c:url value='/image/upload'/>" method="post" enctype="multipart/form-data">--%>
+<%--                            <div class="checkbox">--%>
+<%--                                <input type="file" name="file">--%>
+<%--                            </div>--%>
+<%--                            <button type="submit" class="btn btn-default">Submit</button>--%>
+<%--                        </form>--%>
+
+
+
+<%--                    </div>--%>
+
+<%--                </form>--%>
             </div>
         </div>
     </div>

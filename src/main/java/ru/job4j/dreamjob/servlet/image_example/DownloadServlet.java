@@ -1,4 +1,5 @@
-package ru.job4j.dreamjob.servlet.image;
+package ru.job4j.dreamjob.servlet.image_example;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +12,6 @@ public class DownloadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        StringBuilder logString = new StringBuilder();
 
         String name = req.getParameter("name");
         resp.setContentType("name=" + name);
@@ -19,15 +19,12 @@ public class DownloadServlet extends HttpServlet {
         resp.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
         File file = new File("images" + File.separator + name);
 
-        logString.append(file.getAbsolutePath()).append("\r\n");
-
         try (FileInputStream in = new FileInputStream(file)) {
             resp.getOutputStream().write(in.readAllBytes());
         }
-//        logString.append("abs path: ").append(repository.getAbsolutePath()).append("\r\n")
-//                .append("path: ").append(repository.getPath()).append("\r\n");
-        writeLog(logString.toString());
 
+//        byte[] bytes = Exp.fromBase(1);
+//        resp.getOutputStream().write(bytes);
     }
 
     private void writeLog(String string) {
