@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UploadServlet extends HttpServlet {
-    /* show imgs on swb-page IMG */
+    /* show IMGS on swb-page IMG */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

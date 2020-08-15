@@ -29,7 +29,7 @@
     <!-- candidate jsp servlet -->
     <servlet>
         <servlet-name>CandidateServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.CandidateServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidatesServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CandidateServlet</servlet-name>
@@ -65,13 +65,23 @@
         <url-pattern>/image/delete</url-pattern>
     </servlet-mapping>
 
-    <!-- CandidateImg servlet -->
+    <!-- Candidate Img servlet -->
     <servlet>
         <servlet-name>CandidateImgServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.CandidateImgServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidateImgServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CandidateImgServlet</servlet-name>
-        <url-pattern>/image/canImg</url-pattern>
+        <url-pattern>/image/canImg.do</url-pattern>
+    </servlet-mapping>
+
+    <!-- Candidate Img del servlet -->
+    <servlet>
+        <servlet-name>CandidateImgDelServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidateImgDelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CandidateImgDelServlet</servlet-name>
+        <url-pattern>/image/canImgDel.do</url-pattern>
     </servlet-mapping>
 </web-app>

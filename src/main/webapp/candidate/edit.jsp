@@ -1,6 +1,6 @@
 <%@ page import="ru.job4j.dreamjob.model.Candidate" %>
-<%@ page import="ru.job4j.dreamjob.psql_db_connect.PsqlImg" %>
-<%@ page import="ru.job4j.dreamjob.store.PsqlStore" %>
+<%@ page import="ru.job4j.dreamjob.store.psql.PsqlCandidateStore" %>
+<%@ page import="ru.job4j.dreamjob.store.psql.PsqlImgStore" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
@@ -31,9 +31,9 @@
     String id = request.getParameter("id");
     Candidate can = new Candidate(0, "");
     if (id != null) {
-        can = PsqlStore.instOf().findByIdCandidate(Integer.parseInt(id));
+        can = PsqlCandidateStore.findByIdCandidate(Integer.parseInt(id));
     }
-    byte[] bytes = PsqlImg.fromBaseById(1);
+    byte[] bytes = PsqlImgStore.fromBaseById(1);
 %>
 <div class="container pt-3">
 
@@ -68,28 +68,35 @@
             </div>
             <div class="card-body">
 <%--                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="application/x-www-form-urlencoded">--%>
-                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="multipart/form-data">
+                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="text/plain">
 <%--                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="text/plain">--%>
-                    <div class="form-group">
-                        <label>Имя
-                            <input type="text" class="form-control" name="name" value="<%=can.getName()%>">
-                        </label>
-                    </div>
-                </form>
-                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <p></p>
-                        <label>Изображение</label>
-<%--                        <img src="<c:url value='/image/download?name=0tB82-LbU8U.jpg'/>" width="100px" height="100px"/>--%>
-                        <img src="<c:url value='/image/canImg?id='/><%=can.getImgId()%>" width="100px" height="100px"/>
-                        <p></p>
+                    <label>Имя
+                        <input type="text" class="form-control" name="name" value="<%=can.getName()%>">
 
-                    <h2>Upload image</h2>
-                    <input type="file" name="img">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </label>
+                    <p></p>
+<%--                    <button type="submit" class="btn btn-default">Сохранить Имя</button>--%>
                 </form>
+                <p></p>
+                <label>Изображение</label>
+<%--                <img src="<c:url value='/image/download?name=0tB82-LbU8U.jpg'/>" width="100px" height="100px"/>--%>
+<%--                <img src="<c:url value='/image/canImg.do?id='/><%=1%>" width="100px" height="100px"/>--%>
+                <p></p>
 
+<%--                    <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="multipart/form-data">--%>
+<%--                <form action="<c:url value='/candidate/candidates.do?id='/><%=777%>" method="post" enctype="multipart/form-data">--%>
+<%--                    <div class="form-group">--%>
+<%--                        <p></p>--%>
+<%--                        <label>Изображение</label>--%>
+<%--&lt;%&ndash;                        <img src="<c:url value='/image/download?name=0tB82-LbU8U.jpg'/>" width="100px" height="100px"/>&ndash;%&gt;--%>
+<%--                        <img src="<c:url value='/image/canImg.do?id='/><%=can.getImgId()%>" width="100px" height="100px"/>--%>
+<%--                        <p></p>--%>
+
+<%--&lt;%&ndash;                    <h2>Upload image</h2>&ndash;%&gt;--%>
+<%--&lt;%&ndash;                    <input type="file" name="img">&ndash;%&gt;--%>
+<%--                    </div>--%>
+<%--
+<%--                </form>--%>
 
 
 <%--                        <h2>Upload image</h2>--%>
@@ -107,6 +114,23 @@
 <%--                    </div>--%>
 
 <%--                </form>--%>
+
+
+<%--                <form action="<c:url value='/image/canImg.do?id='/><%=777%>&name=<%=can.getName()%>" method="post" enctype="multipart/form-data">--%>
+                <form action="<c:url value='/image/canImg.do?id='/><%=777%>" method="post" enctype="multipart/form-data">
+                    <h2>Upload image</h2>
+                    <input type="file" name="img">
+                    <button type="submit" class="btn btn-primary">Сохранить Картинку</button>
+                </form>
+
+<%--                <form action="<c:url value='/image/canImgDel.do?id='/><%=can.getId()%>" method="post" enctype="multipart/form-data">--%>
+<%--                    <div class="form-group">--%>
+<%--                        <h2>Upload image</h2>--%>
+<%--                        <input type="file" name="img">--%>
+<%--                    </div>--%>
+<%--                    <button type="submit" class="btn btn-primary">Удалить Арт</button>--%>
+<%--                </form>--%>
+
             </div>
         </div>
     </div>
