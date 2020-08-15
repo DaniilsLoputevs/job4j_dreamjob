@@ -26,15 +26,34 @@
         <servlet-name>PostServlet</servlet-name>
         <url-pattern>/post/posts.do</url-pattern>
     </servlet-mapping>
-    <!-- candidate jsp servlet -->
+
+
     <servlet>
-        <servlet-name>CandidateServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidatesServlet</servlet-class>
+        <servlet-name>NewCandidateServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.can.CandidatesServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>CandidateServlet</servlet-name>
+        <servlet-name>NewCandidateServlet</servlet-name>
         <url-pattern>/candidate/candidates.do</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>CandidateImgServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.can.CandidateImgServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CandidateImgServlet</servlet-name>
+        <url-pattern>/candidate/image.get</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CandidateImgDelServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.can.CandidateDeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CandidateImgDelServlet</servlet-name>
+        <url-pattern>/candidate/delete.do</url-pattern>
+    </servlet-mapping>
+
+
     <!-- upload jsp servlet -->
     <servlet>
         <servlet-name>UploadServlet</servlet-name>
@@ -44,7 +63,6 @@
         <servlet-name>UploadServlet</servlet-name>
         <url-pattern>/image/upload</url-pattern>
     </servlet-mapping>
-
     <!-- download jsp servlet -->
     <servlet>
         <servlet-name>DownloadServlet</servlet-name>
@@ -54,7 +72,6 @@
         <servlet-name>DownloadServlet</servlet-name>
         <url-pattern>/image/download</url-pattern>
     </servlet-mapping>
-
     <!-- Delete jsp servlet -->
     <servlet>
         <servlet-name>DeleteServlet</servlet-name>
@@ -63,25 +80,5 @@
     <servlet-mapping>
         <servlet-name>DeleteServlet</servlet-name>
         <url-pattern>/image/delete</url-pattern>
-    </servlet-mapping>
-
-    <!-- Candidate Img servlet -->
-    <servlet>
-        <servlet-name>CandidateImgServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidateImgServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CandidateImgServlet</servlet-name>
-        <url-pattern>/image/canImg.do</url-pattern>
-    </servlet-mapping>
-
-    <!-- Candidate Img del servlet -->
-    <servlet>
-        <servlet-name>CandidateImgDelServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidateImgDelServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CandidateImgDelServlet</servlet-name>
-        <url-pattern>/image/canImgDel.do</url-pattern>
     </servlet-mapping>
 </web-app>

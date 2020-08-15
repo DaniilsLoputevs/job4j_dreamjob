@@ -1,7 +1,7 @@
 package ru.job4j.dreamjob.debug;
 
 import org.apache.commons.io.FileUtils;
-import ru.job4j.dreamjob.store.psql.PsqlImgStore;
+import ru.job4j.dreamjob.store.psql.PsqlStoreImg;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class Exp {
     }
 
     public static int toBase(File file) {
-        return PsqlImgStore.toBaseFile(bytes(file));
+        return PsqlStoreImg.toBaseFile(bytes(file));
 //        int rsl = -1;
 //        try (var ps = PsqlConnect.getPool().getConnection()
 //                .prepareStatement("INSERT INTO byte(byte_arr_img) VALUES (?)",
@@ -43,7 +43,7 @@ public class Exp {
     }
 
     public static byte[] fromBase(int id) {
-        return PsqlImgStore.fromBaseById(id);
+        return PsqlStoreImg.fromBaseById(id);
 //        byte[] rsl = null;
 //        try (var prepStat = PsqlConnect.getPool().getConnection()
 //                .prepareStatement("SELECT * FROM byte where id=(?)")

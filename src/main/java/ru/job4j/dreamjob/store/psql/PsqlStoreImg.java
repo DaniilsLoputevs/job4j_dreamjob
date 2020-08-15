@@ -1,16 +1,17 @@
 package ru.job4j.dreamjob.store.psql;
 
-import org.apache.commons.io.FileUtils;
 import ru.job4j.dreamjob.debug.ConslLog;
 import ru.job4j.dreamjob.psql_db_connect.PsqlConnect;
 
-import java.io.File;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class PsqlImgStore {
+public class PsqlStoreImg {
 
+    /**
+     * @param file - img file to bytes
+     * @return - id in base.
+     */
     public static int toBaseFile(byte[] file) {
         int rsl = -1;
         try (var ps = PsqlConnect.getPool().getConnection()
@@ -44,7 +45,7 @@ public class PsqlImgStore {
             if (bytes != null) {
                 rsl = bytes;
             } else {
-                ConslLog.log("PsqlImgStore - Exception - fromBaseById(...): bytes == null");
+                ConslLog.log("PsqlStoreImg - Exception - fromBaseById(...): bytes == null");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,21 +64,17 @@ public class PsqlImgStore {
         }
     }
 
-//    public static void main(String[] args) {
-//        deleteById(5);
-//    }
-
     /* --- Private Things --- */
 
-    private static byte[] bytes(File file) {
-        byte[] rsl = null;
-        try {
-            rsl = FileUtils.readFileToByteArray(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return rsl;
-    }
+//    private static byte[] bytes(File file) {
+//        byte[] rsl = null;
+//        try {
+//            rsl = FileUtils.readFileToByteArray(file);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return rsl;
+//    }
 
     /* --- commented because it should be useful --- */
 

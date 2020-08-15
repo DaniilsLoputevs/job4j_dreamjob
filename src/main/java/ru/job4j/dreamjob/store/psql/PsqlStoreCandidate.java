@@ -8,9 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PsqlCandidateStore {
+public class PsqlStoreCandidate implements PsqlStore<Candidate> {
+    private static final class Lazy {
+        private static final PsqlStore<Candidate> INST = new PsqlStoreCandidate();
+    }
 
-    public static Collection<Candidate> findAllCandidates() {
+    public static PsqlStore<Candidate> instOf() {
+        return Lazy.INST;
+    }
+
+    @Override
+    public Collection<Candidate> findAll() {
         List<Candidate> candidates = new ArrayList<>();
         try (var prepStat = PsqlConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM candidate")
@@ -19,7 +27,8 @@ public class PsqlCandidateStore {
                 while (it.next()) {
                     candidates.add(new Candidate(
                             it.getInt("id"),
-                            it.getString("name")
+                            it.getString("name"),
+                            it.getInt("img_id")
                     ));
                 }
             }
@@ -29,7 +38,8 @@ public class PsqlCandidateStore {
         return candidates;
     }
 
-    public static void save(Candidate candidate) {
+    @Override
+    public void save(Candidate candidate) {
         if (candidate.getId() == 0) {
             create(candidate);
         } else {
@@ -37,11 +47,13 @@ public class PsqlCandidateStore {
         }
     }
 
-    private static Candidate create(Candidate candidate) {
+    @Override
+    public void create(Candidate candidate) {
         try (var prepStat = PsqlConnect.getPool().getConnection()
-                .prepareStatement("INSERT INTO candidate(name) VALUES (?)")
+                .prepareStatement("INSERT INTO candidate(name, img_id) VALUES (?), (?)")
         ) {
             prepStat.setString(1, candidate.getName());
+            prepStat.setInt(2, candidate.getImgId());
             prepStat.execute();
             try (ResultSet id = prepStat.getGeneratedKeys()) {
                 if (id.next()) {
@@ -51,35 +63,50 @@ public class PsqlCandidateStore {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return candidate;
     }
 
-    private static void update(Candidate candidate) {
+    @Override
+    public void update(Candidate candidate) {
         try (var prepStat = PsqlConnect.getPool().getConnection()
-                .prepareStatement("UPDATE candidate SET name=(?) WHERE id=(?)")
+                .prepareStatement("UPDATE candidate SET name=(?), img_id=(?) WHERE id=(?)")
         ) {
             prepStat.setString(1, candidate.getName());
-            prepStat.setInt(2, candidate.getId());
+            prepStat.setInt(2, candidate.getImgId());
+            prepStat.setInt(3, candidate.getId());
             prepStat.execute();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static Candidate findByIdCandidate(int id) {
+    @Override
+    public Candidate findById(int id) {
         Candidate rsl = new Candidate(0, "");
         try (var prepStat = PsqlConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM candidate where id=(?)")
+                .prepareStatement("SELECT * FROM candidate WHERE id=(?)")
         ) {
             prepStat.setInt(1, id);
             ResultSet resultSet = prepStat.executeQuery();
             while (resultSet.next()) {
                 rsl.setId(resultSet.getInt("id"));
                 rsl.setName(resultSet.getString("name"));
+                rsl.setImgId(resultSet.getInt("img_id"));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return rsl;
+    }
+
+    @Override
+    public void deleteById(int id) {
+        try (var prepStat = PsqlConnect.getPool().getConnection()
+                .prepareStatement("DELETE FROM candidate WHERE id=(?)")
+        ) {
+            prepStat.setInt(1, id);
+            prepStat.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

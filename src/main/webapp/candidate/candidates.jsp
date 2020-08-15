@@ -61,6 +61,7 @@
                     </thead>
                     <tbody>
 
+                    <jsp:useBean id="candidates" scope="request" type="java.util.List"/>
                     <c:forEach items="${candidates}" var="can">
                         <tr>
                             <td>
@@ -68,6 +69,7 @@
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
                                 <c:out value="${can.name}"/>
+                                <img src="<c:url value='/candidate/image.get?imgId='/>${can.imgId}" width="100px" height="100px"/>
                             </td>
                         </tr>
                     </c:forEach>

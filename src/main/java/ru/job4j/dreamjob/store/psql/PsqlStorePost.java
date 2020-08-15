@@ -8,9 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PsqlPostStore {
+public class PsqlStorePost implements PsqlStore<Post> {
+    private static final class Lazy {
+        private static final PsqlStore<Post> INST = new PsqlStorePost();
+    }
 
-    public static Collection<Post> findAllPosts() {
+    public static PsqlStore<Post> instOf() {
+        return PsqlStorePost.Lazy.INST;
+    }
+
+    @Override
+    public Collection<Post> findAll() {
         List<Post> posts = new ArrayList<>();
         try (var prepStat = PsqlConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM post")
@@ -29,7 +37,8 @@ public class PsqlPostStore {
         return posts;
     }
 
-    public static void save(Post post) {
+    @Override
+    public void save(Post post) {
         if (post.getId() == 0) {
             create(post);
         } else {
@@ -37,7 +46,8 @@ public class PsqlPostStore {
         }
     }
 
-    private static void create(Post post) {
+    @Override
+    public void create(Post post) {
         try (var prepStat = PsqlConnect.getPool().getConnection()
                 .prepareStatement("INSERT INTO post(name) VALUES (?)")
         ) {
@@ -48,7 +58,8 @@ public class PsqlPostStore {
         }
     }
 
-    private static void update(Post postUpd) {
+    @Override
+    public void update(Post postUpd) {
         try (var prepStat = PsqlConnect.getPool().getConnection()
                 .prepareStatement("UPDATE post SET name=(?) WHERE id=(?)")
         ) {
@@ -60,10 +71,11 @@ public class PsqlPostStore {
         }
     }
 
-    public static Post findByIdPost(int id) {
+    @Override
+    public Post findById(int id) {
         Post rsl = new Post(0, "");
         try (var prepStat = PsqlConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM Post where id=(?)")
+                .prepareStatement("SELECT * FROM Post WHERE id=(?)")
         ) {
             prepStat.setInt(1, id);
             ResultSet resultSet = prepStat.executeQuery();
@@ -75,5 +87,17 @@ public class PsqlPostStore {
             e.printStackTrace();
         }
         return rsl;
+    }
+
+    @Override
+    public void deleteById(int id) {
+        try (var prepStat = PsqlConnect.getPool().getConnection()
+                .prepareStatement("DELETE FROM post WHERE id=(?)")
+        ) {
+            prepStat.setInt(1, id);
+            prepStat.executeQuery();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
