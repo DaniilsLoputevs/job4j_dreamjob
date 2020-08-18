@@ -1,4 +1,4 @@
-package ru.job4j.dreamjob.psql_db_connect;
+package ru.job4j.dreamjob.psql;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class PsqlConnect implements AutoCloseable {
+public class PsqlPoolConnect implements AutoCloseable {
     private final BasicDataSource pool = new BasicDataSource();
 
-    private PsqlConnect() {
+    private PsqlPoolConnect() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
                 new FileReader("db.properties")
@@ -44,7 +44,7 @@ public class PsqlConnect implements AutoCloseable {
     }
 
     private static final class Lazy {
-        private static final PsqlConnect INST = new PsqlConnect();
+        private static final PsqlPoolConnect INST = new PsqlPoolConnect();
     }
 
     public static BasicDataSource getPool() {

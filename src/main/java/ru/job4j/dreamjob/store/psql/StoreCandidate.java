@@ -1,37 +1,50 @@
 package ru.job4j.dreamjob.store.psql;
 
+import ru.job4j.dreamjob.ahelptools.ConslLog;
 import ru.job4j.dreamjob.model.Candidate;
-import ru.job4j.dreamjob.psql_db_connect.PsqlConnect;
+import ru.job4j.dreamjob.psql.PsqlPoolConnect;
+import ru.job4j.dreamjob.store.Store;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class PsqlStoreCandidate implements PsqlStore<Candidate> {
+public class StoreCandidate implements Store<Candidate> {
     private static final class Lazy {
-        private static final PsqlStore<Candidate> INST = new PsqlStoreCandidate();
+        private static final Store<Candidate> INST = new StoreCandidate();
     }
 
-    public static PsqlStore<Candidate> instOf() {
+    public static Store<Candidate> instOf() {
         return Lazy.INST;
     }
 
     @Override
     public Collection<Candidate> findAll() {
         List<Candidate> candidates = new ArrayList<>();
-        try (var prepStat = PsqlConnect.getPool().getConnection()
+        ConslLog.log("str1");
+        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM candidate")
         ) {
+            ConslLog.log("str2");
             try (ResultSet it = prepStat.executeQuery()) {
+                ConslLog.log("str3");
+                ConslLog.log("before while");
+                int i = 0;
                 while (it.next()) {
+                    ConslLog.log("loop", i);
+                    ConslLog.log("id", it.getInt("id"));
+                    ConslLog.log("name", it.getString("name"));
+                    ConslLog.log("img_id", it.getInt("img_id"));
                     candidates.add(new Candidate(
                             it.getInt("id"),
                             it.getString("name"),
                             it.getInt("img_id")
                     ));
+                    ConslLog.log("loop - finish", i++);
                 }
             }
+            ConslLog.log("str4 - finish");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,11 +60,16 @@ public class PsqlStoreCandidate implements PsqlStore<Candidate> {
         }
     }
 
-    @Override
-    public void create(Candidate candidate) {
-        try (var prepStat = PsqlConnect.getPool().getConnection()
-                .prepareStatement("INSERT INTO candidate(name, img_id) VALUES (?), (?)")
+    private void create(Candidate candidate) {
+        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
+                .prepareStatement("INSERT INTO candidate(name, img_id) VALUES (?, ?)")
         ) {
+            // img with id=0 is default img - else it won't work.
+//            if (candidate.getImgId() < 0) {
+//                candidate.setImgId(1);
+//            }
+            ConslLog.log("IMPORTANT imgId", candidate.getImgId());
+            ConslLog.log("IMPORTANT name", candidate.getName());
             prepStat.setString(1, candidate.getName());
             prepStat.setInt(2, candidate.getImgId());
             prepStat.execute();
@@ -65,9 +83,8 @@ public class PsqlStoreCandidate implements PsqlStore<Candidate> {
         }
     }
 
-    @Override
-    public void update(Candidate candidate) {
-        try (var prepStat = PsqlConnect.getPool().getConnection()
+    private void update(Candidate candidate) {
+        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("UPDATE candidate SET name=(?), img_id=(?) WHERE id=(?)")
         ) {
             prepStat.setString(1, candidate.getName());
@@ -82,7 +99,7 @@ public class PsqlStoreCandidate implements PsqlStore<Candidate> {
     @Override
     public Candidate findById(int id) {
         Candidate rsl = new Candidate(0, "");
-        try (var prepStat = PsqlConnect.getPool().getConnection()
+        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM candidate WHERE id=(?)")
         ) {
             prepStat.setInt(1, id);
@@ -100,7 +117,7 @@ public class PsqlStoreCandidate implements PsqlStore<Candidate> {
 
     @Override
     public void deleteById(int id) {
-        try (var prepStat = PsqlConnect.getPool().getConnection()
+        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("DELETE FROM candidate WHERE id=(?)")
         ) {
             prepStat.setInt(1, id);

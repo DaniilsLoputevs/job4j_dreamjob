@@ -1,5 +1,5 @@
 <%@ page import="ru.job4j.dreamjob.model.Candidate" %>
-<%@ page import="ru.job4j.dreamjob.store.psql.PsqlStoreCandidate" %>
+<%@ page import="ru.job4j.dreamjob.store.psql.StoreCandidate" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
@@ -30,11 +30,10 @@
     String id = request.getParameter("id");
     Candidate can = new Candidate(0, "");
     if (id != null) {
-        can = PsqlStoreCandidate.findByIdCandidate(Integer.parseInt(id));
+        can = StoreCandidate.instOf().findById(Integer.parseInt(id));
     }
 %>
 <div class="container pt-3">
-
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
@@ -65,33 +64,36 @@
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="application/x-www-form-urlencodeda">
 
+                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post"
+                      enctype="application/x-www-form-urlencodeda">
                     <label>Имя
                         <input type="text" class="form-control" name="name" value="<%=can.getName()%>">
                     </label>
-                    <p></p>
-                    <button type="submit" class="btn btn-default">Сохранить Имя</button>
+                    <button type="submit" class="btn btn-primary">Сохранить Имя</button>
                 </form>
+
                 <p></p>
                 <label>Изображение</label>
-<%--                <img src="<c:url value='/image/download?name=0tB82-LbU8U.jpg'/>" width="100px" height="100px"/>--%>
-                <img src="<c:url value='/candidate/image.get?imgId='/><%=can.getImgId()%>" width="100px" height="100px"/>
+                <p></p>
+                <img src="<c:url value='/candidate/image.get?imgId='/><%=can.getImgId()%>" width="100px"
+                     height="100px"/>
+                <p></p>
+                <a href="<c:url value='/candidate/image.get?imgId='/><%=can.getImgId()%>">скачать изображение</a>
                 <p></p>
 
-                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post" enctype="multipart/form-data">
-                    <h3>Upload image</h3>
+                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post"
+                      enctype="multipart/form-data">
+                    <h3>Загрузить изображение</h3>
                     <input type="file" name="img">
                     <button type="submit" class="btn btn-primary">Сохранить Картинку</button>
                 </form>
 
-<%--                <form action="<c:url value='/image/canImgDel.do?id='/><%=can.getId()%>" method="post" enctype="multipart/form-data">--%>
-<%--                    <div class="form-group">--%>
-<%--                        <h2>Upload image</h2>--%>
-<%--                        <input type="file" name="img">--%>
-<%--                    </div>--%>
-<%--                    <button type="submit" class="btn btn-primary">Удалить Арт</button>--%>
-<%--                </form>--%>
+                <form action="<c:url value='/candidate/delete.do?id='/><%=can.getId()%>" method="post"
+                      enctype="application/x-www-form-urlencodeda">
+                    <h3>Осторожно!</h3>
+                    <button type="submit" class="btn btn-primary">Удалить кандидата</button>
+                </form>
 
             </div>
         </div>

@@ -60,7 +60,6 @@
                     </tr>
                     </thead>
                     <tbody>
-
                     <jsp:useBean id="candidates" scope="request" type="java.util.List"/>
                     <c:forEach items="${candidates}" var="can">
                         <tr>
@@ -73,7 +72,6 @@
                             </td>
                         </tr>
                     </c:forEach>
-
                     </tbody>
                 </table>
             </div>

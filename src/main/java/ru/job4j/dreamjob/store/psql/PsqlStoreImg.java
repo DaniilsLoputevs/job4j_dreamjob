@@ -1,7 +1,7 @@
 package ru.job4j.dreamjob.store.psql;
 
-import ru.job4j.dreamjob.debug.ConslLog;
-import ru.job4j.dreamjob.psql_db_connect.PsqlConnect;
+import ru.job4j.dreamjob.ahelptools.ConslLog;
+import ru.job4j.dreamjob.psql.PsqlPoolConnect;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -14,7 +14,7 @@ public class PsqlStoreImg {
      */
     public static int toBaseFile(byte[] file) {
         int rsl = -1;
-        try (var ps = PsqlConnect.getPool().getConnection()
+        try (var ps = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("INSERT INTO can_img(byte_arr_img) VALUES (?)",
                         Statement.RETURN_GENERATED_KEYS)
         ) {
@@ -33,7 +33,7 @@ public class PsqlStoreImg {
 
     public static byte[] fromBaseById(int id) {
         byte[] rsl = null;
-        try (var prepStat = PsqlConnect.getPool().getConnection()
+        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM can_img where id=(?)")
         ) {
             prepStat.setInt(1, id);
@@ -54,7 +54,7 @@ public class PsqlStoreImg {
     }
 
     public static void deleteById(int id) {
-        try (var prepStat = PsqlConnect.getPool().getConnection()
+        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("DELETE FROM can_img WHERE id=(?)")
         ) {
             prepStat.setInt(1, id);

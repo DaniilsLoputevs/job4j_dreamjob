@@ -17,7 +17,8 @@
         <servlet-name>IndexServlet</servlet-name>
         <url-pattern>/index.do</url-pattern>
     </servlet-mapping>
-    <!-- post jsp servlet -->
+
+    <!-- post servlets -->
     <servlet>
         <servlet-name>PostServlet</servlet-name>
         <servlet-class>ru.job4j.dreamjob.servlet.PostServlet</servlet-class>
@@ -27,18 +28,18 @@
         <url-pattern>/post/posts.do</url-pattern>
     </servlet-mapping>
 
-
+    <!-- candidate Servlets -->
     <servlet>
-        <servlet-name>NewCandidateServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.can.CandidatesServlet</servlet-class>
+        <servlet-name>CandidateServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidatesServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>NewCandidateServlet</servlet-name>
+        <servlet-name>CandidateServlet</servlet-name>
         <url-pattern>/candidate/candidates.do</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>CandidateImgServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.can.CandidateImgServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidateImgServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CandidateImgServlet</servlet-name>
@@ -46,27 +47,28 @@
     </servlet-mapping>
     <servlet>
         <servlet-name>CandidateImgDelServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.can.CandidateDeleteServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.servlet.candidate.CandidateDeleteServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>CandidateImgDelServlet</servlet-name>
         <url-pattern>/candidate/delete.do</url-pattern>
     </servlet-mapping>
 
-
+    <!-- image example servlets -->
     <!-- upload jsp servlet -->
     <servlet>
-        <servlet-name>UploadServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.image_example.UploadServlet</servlet-class>
+        <servlet-name>ExampleUploadServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.example.image.servlet.UploadServlet</servlet-class>
+<!--        <servlet-class>ru.job4j.dreamjob.example.image.servlet.UploadServlet</servlet-class>-->
     </servlet>
     <servlet-mapping>
-        <servlet-name>UploadServlet</servlet-name>
+        <servlet-name>ExampleUploadServlet</servlet-name>
         <url-pattern>/image/upload</url-pattern>
     </servlet-mapping>
     <!-- download jsp servlet -->
     <servlet>
         <servlet-name>DownloadServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.image_example.DownloadServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.example.image.servlet.DownloadServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DownloadServlet</servlet-name>
@@ -75,7 +77,7 @@
     <!-- Delete jsp servlet -->
     <servlet>
         <servlet-name>DeleteServlet</servlet-name>
-        <servlet-class>ru.job4j.dreamjob.servlet.image_example.DeleteServlet</servlet-class>
+        <servlet-class>ru.job4j.dreamjob.example.image.servlet.DeleteServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DeleteServlet</servlet-name>

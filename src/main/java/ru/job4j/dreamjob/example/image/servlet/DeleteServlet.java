@@ -1,4 +1,4 @@
-package ru.job4j.dreamjob.servlet.image_example;
+package ru.job4j.dreamjob.example.image.servlet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

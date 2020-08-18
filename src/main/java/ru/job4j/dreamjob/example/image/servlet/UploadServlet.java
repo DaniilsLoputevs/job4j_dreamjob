@@ -1,10 +1,10 @@
-package ru.job4j.dreamjob.servlet.image_example;
+package ru.job4j.dreamjob.example.image.servlet;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import ru.job4j.dreamjob.image.ImageControl;
+import ru.job4j.dreamjob.example.image.ImageControl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;

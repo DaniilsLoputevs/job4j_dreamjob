@@ -1,4 +1,4 @@
-package ru.job4j.dreamjob.servlet.image_example;
+package ru.job4j.dreamjob.example.image.servlet;
 
 
 import javax.servlet.ServletException;
@@ -24,7 +24,7 @@ public class DownloadServlet extends HttpServlet {
             resp.getOutputStream().write(in.readAllBytes());
         }
 
-//        byte[] bytes = Exp.fromBase(1);
+//        byte[] bytes = ManualExperiment.fromBase(1);
 //        resp.getOutputStream().write(bytes);
     }
 

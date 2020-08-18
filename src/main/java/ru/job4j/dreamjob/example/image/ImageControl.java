@@ -1,7 +1,7 @@
-package ru.job4j.dreamjob.image;
+package ru.job4j.dreamjob.example.image;
 
 import org.apache.commons.fileupload.FileItem;
-import ru.job4j.dreamjob.psql_db_connect.PsqlConnect;
+import ru.job4j.dreamjob.psql.PsqlPoolConnect;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,27 +10,14 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class ImageControl {
-//    public static void psqlDeleteImg(String imgName) {
-//
-//    }
-//    public static void servDeleteImg(String imgName) {
-//
-//    }
-//    public static void psqlAddImgTo(String imgName) {
-//
-//    }
-//    public static void servAddImgTo(String imgName) {
-//
-//    }
-
     /**
      * @param imgName -
      * @return img id in PSQL after insert.
      */
     public static int uploadImgToPsql(String imgName) {
         var rsl = -1;
-        try (var ps = PsqlConnect.getPool().getConnection()
-                .prepareStatement("INSERT INTO image(img_name) VALUES (?)",
+        try (var ps = PsqlPoolConnect.getPool().getConnection()
+                .prepareStatement("INSERT INTO can_img(byte_arr_img) VALUES (?)",
                         Statement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, imgName);
@@ -47,7 +34,7 @@ public class ImageControl {
     }
 
 //    private Candidate create(Candidate candidate) {
-//        try (var ps = PsqlConnect.get().getConnection()
+//        try (var ps = PsqlPoolConnect.get().getConnection()
 //                .prepareStatement("INSERT INTO candidate(name) VALUES (?)")
 //        ) {
 //            ps.setString(1, candidate.getName());
@@ -78,8 +65,8 @@ public class ImageControl {
 
 //    public static String getImgSrcById(int id) {
 //        String rsl = "";
-//        try (var prepStat = PsqlConnect.get().getConnection()
-//                .prepareStatement("SELECT * FROM image where id=(?)")
+//        try (var prepStat = PsqlPoolConnect.get().getConnection()
+//                .prepareStatement("SELECT * FROM can_img where id=(?)")
 //        ) {
 //            prepStat.setInt(1, id);
 //            ResultSet resultSet = prepStat.executeQuery();
