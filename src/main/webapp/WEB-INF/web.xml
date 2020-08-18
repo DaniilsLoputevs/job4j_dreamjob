@@ -53,13 +53,23 @@
         <servlet-name>CandidateImgDelServlet</servlet-name>
         <url-pattern>/candidate/delete.do</url-pattern>
     </servlet-mapping>
+    <!-- Authorisation Servlets -->
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.AuthServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth.do</url-pattern>
+    </servlet-mapping>
+
 
     <!-- image example servlets -->
     <!-- upload jsp servlet -->
     <servlet>
         <servlet-name>ExampleUploadServlet</servlet-name>
         <servlet-class>ru.job4j.dreamjob.example.image.servlet.UploadServlet</servlet-class>
-<!--        <servlet-class>ru.job4j.dreamjob.example.image.servlet.UploadServlet</servlet-class>-->
+        <!--        <servlet-class>ru.job4j.dreamjob.example.image.servlet.UploadServlet</servlet-class>-->
     </servlet>
     <servlet-mapping>
         <servlet-name>ExampleUploadServlet</servlet-name>
