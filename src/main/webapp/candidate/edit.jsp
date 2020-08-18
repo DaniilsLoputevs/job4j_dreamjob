@@ -27,10 +27,10 @@
 
 <body>
 <%
-    String id = request.getParameter("id");
+    String reqId = request.getParameter("id");
     Candidate can = new Candidate(0, "");
-    if (id != null) {
-        can = StoreCandidate.instOf().findById(Integer.parseInt(id));
+    if (reqId != null) {
+        can = StoreCandidate.instOf().findById(Integer.parseInt(reqId));
     }
 %>
 <div class="container pt-3">
@@ -52,7 +52,17 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить Кандидата</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                <c:choose>
+                    <c:when test="${user.name!=null}">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
+                            <c:out value="${user.name}"/> | Выйти</a>
+                        <br/>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                        <br/>
+                    </c:otherwise>
+                </c:choose>
             </li>
         </ul>
     </div>
@@ -60,39 +70,48 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <% if (id == null) { %>
-                Новый кандидат.
-                <% } else { %>
-                Редактирование кандидата.
-                <% } %>
+                <c:set var="reqId" scope="session" value='<%=request.getParameter("id")%>'/>
+                <c:choose>
+                    <c:when test="${reqId==null}">
+                        Новый кандидат.
+                    </c:when>
+                    <c:otherwise>
+                        Редактирование кандидата.
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div class="card-body">
-
-                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post"
+                <c:set var="id" scope="session" value="<%=can.getId()%>"/>
+                <c:set var="name" scope="session" value="<%=can.getName()%>"/>
+                <c:set var="imgId" scope="session" value="<%=can.getImgId()%>"/>
+                <%-- name --%>
+                <form action="<c:url value='/candidate/candidates.do?id=${id}'/>" method="post"
                       enctype="application/x-www-form-urlencodeda">
                     <label>Имя
-                        <input type="text" class="form-control" name="name" value="<%=can.getName()%>">
+                        <input type="text" class="form-control" name="name" value="${name}">
                     </label>
                     <button type="submit" class="btn btn-primary">Сохранить Имя</button>
                 </form>
-
-                <p></p>
-                <label>Изображение</label>
-                <p></p>
-                <img src="<c:url value='/candidate/image.get?imgId='/><%=can.getImgId()%>" width="100px"
-                     height="100px"/>
-                <p></p>
-                <a href="<c:url value='/candidate/image.get?imgId='/><%=can.getImgId()%>">скачать изображение</a>
-                <p></p>
-
-                <form action="<c:url value='/candidate/candidates.do?id='/><%=can.getId()%>" method="post"
+                <%-- image --%>
+                <c:if test="${id > 0}">
+                    <p></p>
+                    <label>Изображение</label>
+                    <p></p>
+                    <img src="<c:url value='/candidate/image.get?imgId=${imgId}'/>" width="100px"
+                         height="100px"/>
+                    <p></p>
+                    <a href="<c:url value='/candidate/image.get?imgId=${imgId}'/>">скачать изображение</a>
+                    <p></p>
+                </c:if>
+                <%-- upload image --%>
+                <form action="<c:url value='/candidate/candidates.do?id=${id}'/>" method="post"
                       enctype="multipart/form-data">
                     <h3>Загрузить изображение</h3>
                     <input type="file" name="img">
                     <button type="submit" class="btn btn-primary">Сохранить Картинку</button>
                 </form>
-
-                <form action="<c:url value='/candidate/delete.do?id='/><%=can.getId()%>" method="post"
+                <%-- delete candidate --%>
+                <form action="<c:url value='/candidate/delete.do?id=${id}'/>" method="post"
                       enctype="application/x-www-form-urlencodeda">
                     <h3>Осторожно!</h3>
                     <button type="submit" class="btn btn-primary">Удалить кандидата</button>

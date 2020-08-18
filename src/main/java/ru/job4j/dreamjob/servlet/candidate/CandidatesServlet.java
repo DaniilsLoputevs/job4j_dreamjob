@@ -33,6 +33,7 @@ public class CandidatesServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ConslLog.log("Can Servlet - GET Start");
         req.setAttribute("candidates", StoreCandidate.instOf().findAll());
+        req.setAttribute("user", req.getSession().getAttribute("user"));
 
         ConslLog.log("Can Servlet - GET Finish");
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);

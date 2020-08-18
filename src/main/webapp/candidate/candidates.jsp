@@ -44,7 +44,17 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить Кандидата</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                <c:choose>
+                    <c:when test="${user.name!=null}">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
+                            <c:out value="${user.name}"/> | Выйти</a>
+                        <br/>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                        <br/>
+                    </c:otherwise>
+                </c:choose>
             </li>
         </ul>
     </div>

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%--<%@ page import="ru.job4j.dreamjob.store.psql.PsqlStore" %>--%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -21,6 +21,38 @@
 </head>
 <body>
 <div class="container pt-3">
+    <div class="row">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/post/posts.do">Вакансии</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/candidates.do">Кандидаты</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить Вакансию</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить Кандидата</a>
+            </li>
+            <li class="nav-item">
+                <c:choose>
+                    <c:when test="${user.name!=null}">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
+                            <c:out value="${user.name}"/> | Выйти</a>
+                        <br/>
+                    </c:when>
+                    <c:otherwise>
+                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                        <br/>
+                    </c:otherwise>
+                </c:choose>
+            </li>
+        </ul>
+    </div>
 
     <div class="row">
         <div class="card" style="width: 100%">
