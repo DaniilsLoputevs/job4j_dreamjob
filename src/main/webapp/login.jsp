@@ -20,36 +20,39 @@
     <title>Работа мечты</title>
 </head>
 <body>
-<div class="container pt-3">
+<div class="container ">
     <div class="row">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/index.do">Главная</a>
+                <a class="nav-link" href="<c:url value='/index.do'/>">Главная</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/post/posts.do">Вакансии</a>
+                <a class="nav-link" href="<c:url value='/post/posts.do'/>">Вакансии</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/candidates.do">Кандидаты</a>
+                <a class="nav-link" href="<c:url value='/candidate/candidates.do'/>">Кандидаты</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить Вакансию</a>
+                <a class="nav-link" href="<c:url value='/post/edit.jsp'/>">Добавить Вакансию</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить Кандидата</a>
+                <a class="nav-link" href="<c:url value='/candidate/edit.jsp'/>">Добавить Кандидата</a>
             </li>
             <li class="nav-item">
                 <c:choose>
                     <c:when test="${user.name!=null}">
-                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
+                        <a class="nav-link" href="<c:url value='/login.jsp'/>">
                             <c:out value="${user.name}"/> | Выйти</a>
                         <br/>
                     </c:when>
                     <c:otherwise>
-                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
+                        <a class="nav-link" href="<c:url value='/login.jsp'/>">Войти</a>
                         <br/>
                     </c:otherwise>
                 </c:choose>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<c:url value='/reg.do'/>">Регистрация</a>
             </li>
         </ul>
     </div>
@@ -60,7 +63,8 @@
                 Авторизация
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+
+                <form action="<c:url value='/auth.do'/>">
                     <div class="form-group">
                         <label>Почта</label>
                         <input type="text" class="form-control" name="email">
@@ -71,6 +75,14 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Войти</button>
                 </form>
+                <p></p>
+                <form action="<c:url value='/reg.do'/>" method="post">
+                    <div class="form-group">
+                        <p>Если вы не зарегистрированы, пожалуйста сделайте это.</p>
+                        <button type="submit" class="btn btn-primary">Регистрация</button>
+                    </div>
+                </form>
+
             </div>
         </div>
     </div>

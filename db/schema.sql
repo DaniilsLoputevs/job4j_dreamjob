@@ -14,3 +14,10 @@ CREATE TABLE IF NOT EXISTS candidate
     name     TEXT,
     photo_id INT references can_img (id)
 );
+CREATE TABLE IF NOT EXISTS "user"
+(
+    id       SERIAL PRIMARY KEY,
+    name     varchar(150),
+    email    varchar(100),
+    password varchar(30)
+)
