@@ -1,27 +1,29 @@
 package ru.job4j.dreamjob.example.image.servlet;
 
-import javax.servlet.RequestDispatcher;
+import ru.job4j.dreamjob.store.psql.PsqlStoreImg;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 
+/**
+ * url-pattern: /image/delete
+ */
 public class DeleteServlet extends HttpServlet {
-
+    /**
+     * Delete img from base.
+     * <p>
+     * imgId : int - image's id in base.
+     * <p>
+     * goto: No
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        doDelete(req, resp);
-
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/image/upload");
-        dispatcher.forward(req, resp);
-    }
-
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        new File("images" + File.separator + name).delete();
+        int imgId = Integer.parseInt(req.getParameter("imgId"));
+        PsqlStoreImg.instOf().deleteById(imgId);
+        req.getRequestDispatcher("/image/upload.do").forward(req, resp);
     }
 }

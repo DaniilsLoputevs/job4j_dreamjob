@@ -22,8 +22,9 @@ public class StoreUser implements Store<User> {
     @Override
     public Collection<User> getAll() {
         List<User> users = new ArrayList<>();
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM \"user\"")
+        var sql = "SELECT * FROM \"user\"";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             try (ResultSet it = prepStat.executeQuery()) {
                 while (it.next()) {
@@ -53,8 +54,10 @@ public class StoreUser implements Store<User> {
 
     public User getByEmail(String email) {
         User rsl = new User(0, "", "", "");
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM \"user\" WHERE email=(?)")
+
+        var sql = "SELECT * FROM \"user\" WHERE email=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setString(1, email);
             ResultSet resultSet = prepStat.executeQuery();
@@ -71,8 +74,9 @@ public class StoreUser implements Store<User> {
     }
 
     public void deleteByEmail(String email) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("DELETE FROM \"user\" WHERE email=(?)")
+        var sql = "DELETE FROM \"user\" WHERE email=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setString(1, email);
             prepStat.executeQuery();
@@ -82,39 +86,40 @@ public class StoreUser implements Store<User> {
     }
 
     private void create(User user) {
-        ConslLog.log("method: create() - START");
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("INSERT INTO \"user\" "
-                        + "(name, email, password) VALUES (?, ?, ?)")
+//        ConslLog.log("method: create() - START");
+
+        var sql = "INSERT INTO \"user\" (name, email, password) VALUES (?, ?, ?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
-            ConslLog.log("method: create() id=", user.getId());
-            ConslLog.log("method: create() name=", user.getName());
-            ConslLog.log("method: create() email=", user.getEmail());
-            ConslLog.log("method: create() password=", user.getPassword());
+//            ConslLog.log("method: create() id=", user.getId());
+//            ConslLog.log("method: create() name=", user.getName());
+//            ConslLog.log("method: create() email=", user.getEmail());
+//            ConslLog.log("method: create() password=", user.getPassword());
 
             prepStat.setString(1, user.getName());
             prepStat.setString(2, user.getEmail());
             prepStat.setString(3, user.getPassword());
-            ConslLog.log("before exe");
+//            ConslLog.log("before exe");
             prepStat.execute();
 
             try (ResultSet id = prepStat.getGeneratedKeys()) {
-                ConslLog.log("before if");
+//                ConslLog.log("before if");
                 if (id.next()) {
-                    ConslLog.log("in if");
+//                    ConslLog.log("in if");
                     user.setId(id.getInt(1));
                 }
             }
-            ConslLog.log("method: create() - FINISH");
+//            ConslLog.log("method: create() - FINISH");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void update(User user) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("UPDATE \"user\" "
-                        + "SET name=(?), email=(?), password=(?) WHERE id=(?)")
+        var sql = "UPDATE \"user\" SET name=(?), email=(?), password=(?) WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setString(1, user.getName());
             prepStat.setString(2, user.getEmail());

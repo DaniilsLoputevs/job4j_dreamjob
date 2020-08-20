@@ -36,7 +36,7 @@ public class CandidateImgServlet extends HttpServlet {
         resp.setContentType("image/png");
         resp.setHeader("Content-Disposition", "attachment; filename=\"image\"");
 
-        byte[] bytes = PsqlStoreImg.fromBaseById(imgId);
+        byte[] bytes = PsqlStoreImg.instOf().fromBaseById(imgId);
         resp.getOutputStream().write(bytes);
     }
 

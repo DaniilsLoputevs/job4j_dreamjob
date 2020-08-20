@@ -22,14 +22,15 @@ public class StoreCandidate implements Store<Candidate> {
     @Override
     public Collection<Candidate> getAll() {
         List<Candidate> candidates = new ArrayList<>();
-        ConslLog.log("str1");
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM candidate")
+//        ConslLog.log("str1");
+        var sql = "SELECT * FROM candidate";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
-            ConslLog.log("str2");
+//            ConslLog.log("str2");
             try (ResultSet it = prepStat.executeQuery()) {
-                ConslLog.log("str3");
-                ConslLog.log("before while");
+//                ConslLog.log("str3");
+//                ConslLog.log("before while");
                 int i = 0;
                 while (it.next()) {
                     ConslLog.log("loop", i);
@@ -41,10 +42,10 @@ public class StoreCandidate implements Store<Candidate> {
                             it.getString("name"),
                             it.getInt("img_id")
                     ));
-                    ConslLog.log("loop - finish", i++);
+//                    ConslLog.log("loop - finish", i++);
                 }
             }
-            ConslLog.log("str4 - finish");
+//            ConslLog.log("str4 - finish");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,15 +62,14 @@ public class StoreCandidate implements Store<Candidate> {
     }
 
     private void create(Candidate candidate) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("INSERT INTO candidate(name, img_id) VALUES (?, ?)")
+        var sql = "INSERT INTO candidate(name, img_id) VALUES (?, ?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
-            // img with id=0 is default img - else it won't work.
-//            if (candidate.getImgId() < 0) {
-//                candidate.setImgId(1);
-//            }
-            ConslLog.log("IMPORTANT imgId", candidate.getImgId());
-            ConslLog.log("IMPORTANT name", candidate.getName());
+
+//            ConslLog.log("IMPORTANT imgId", candidate.getImgId());
+//            ConslLog.log("IMPORTANT name", candidate.getName());
+
             prepStat.setString(1, candidate.getName());
             prepStat.setInt(2, candidate.getImgId());
             prepStat.execute();
@@ -84,8 +84,9 @@ public class StoreCandidate implements Store<Candidate> {
     }
 
     private void update(Candidate candidate) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("UPDATE candidate SET name=(?), img_id=(?) WHERE id=(?)")
+        var sql = "UPDATE candidate SET name=(?), img_id=(?) WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setString(1, candidate.getName());
             prepStat.setInt(2, candidate.getImgId());
@@ -99,8 +100,9 @@ public class StoreCandidate implements Store<Candidate> {
     @Override
     public Candidate getById(int id) {
         Candidate rsl = new Candidate(0, "");
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM candidate WHERE id=(?)")
+        var sql = "SELECT * FROM candidate WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setInt(1, id);
             ResultSet resultSet = prepStat.executeQuery();
@@ -117,8 +119,9 @@ public class StoreCandidate implements Store<Candidate> {
 
     @Override
     public void deleteById(int id) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("DELETE FROM candidate WHERE id=(?)")
+        var sql = "DELETE FROM candidate WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setInt(1, id);
             prepStat.executeQuery();

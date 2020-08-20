@@ -85,13 +85,12 @@
     <!-- image example servlets -->
     <!-- upload jsp servlet -->
     <servlet>
-        <servlet-name>ExampleUploadServlet</servlet-name>
+        <servlet-name>UploadServlet</servlet-name>
         <servlet-class>ru.job4j.dreamjob.example.image.servlet.UploadServlet</servlet-class>
-        <!--        <servlet-class>ru.job4j.dreamjob.example.image.servlet.UploadServlet</servlet-class>-->
     </servlet>
     <servlet-mapping>
-        <servlet-name>ExampleUploadServlet</servlet-name>
-        <url-pattern>/image/upload</url-pattern>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/image/upload.do</url-pattern>
     </servlet-mapping>
     <!-- download jsp servlet -->
     <servlet>

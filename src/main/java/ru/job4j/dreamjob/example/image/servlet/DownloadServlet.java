@@ -1,47 +1,34 @@
 package ru.job4j.dreamjob.example.image.servlet;
 
+import ru.job4j.dreamjob.store.psql.PsqlStoreImg;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
+/**
+ * url-pattern: /image/download
+ */
 public class DownloadServlet extends HttpServlet {
+
+    /**
+     * Download || Show IMG
+     * <p>
+     * imgId : int - image's id in base.
+     * <p>
+     * goto: No
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-
-        String name = req.getParameter("name");
-        resp.setContentType("name=" + name);
+        int imgId = Integer.parseInt(req.getParameter("imgId"));
         resp.setContentType("image/png");
-        resp.setHeader("Content-Disposition", "attachment; filename=\"" + name + "\"");
-        File file = new File("images" + File.separator + name);
+        resp.setHeader("Content-Disposition", "attachment; filename=\"image\"");
 
-        try (FileInputStream in = new FileInputStream(file)) {
-            resp.getOutputStream().write(in.readAllBytes());
-        }
-
-//        byte[] bytes = ManualExperiment.fromBase(1);
-//        resp.getOutputStream().write(bytes);
+        byte[] bytes = PsqlStoreImg.instOf().fromBaseById(imgId);
+        resp.getOutputStream().write(bytes);
     }
 
-//    private void writeLog(String string) {
-//        var log = "C:/Danik/Projects/job4j_dreamjob/src/main/java/ru/job4j/dreamjob/servlet/log.txt";
-//        writeListToFile(log, List.of(string), "");
-//    }
-//
-//    public static void writeListToFile(String path, List<String> content, String sysSeparator) {
-//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
-//            for (String contentLine : content) {
-//                writer.write(contentLine + sysSeparator);
-//            }
-//            writer.flush();
-//        } catch (IOException e) {
-//            System.out.println("IOException: IOHelper - write List to File!");
-//            e.printStackTrace();
-//        }
-//    }
 }

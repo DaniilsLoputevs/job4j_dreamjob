@@ -27,7 +27,7 @@ public class CandidateDeleteServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         Candidate can = StoreCandidate.instOf().getById(id);
 
-        PsqlStoreImg.deleteById(can.getImgId());
+        PsqlStoreImg.instOf().deleteById(can.getImgId());
         StoreCandidate.instOf().deleteById(id);
 
         resp.sendRedirect(req.getContextPath() + "/candidate/candidates.do");

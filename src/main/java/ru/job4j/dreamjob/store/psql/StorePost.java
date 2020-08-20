@@ -21,8 +21,9 @@ public class StorePost implements Store<Post> {
     @Override
     public Collection<Post> getAll() {
         List<Post> posts = new ArrayList<>();
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM post")
+        var sql = "SELECT * FROM post";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             try (ResultSet it = prepStat.executeQuery()) {
                 while (it.next()) {
@@ -48,8 +49,9 @@ public class StorePost implements Store<Post> {
     }
 
     private void create(Post post) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("INSERT INTO post(name) VALUES (?)")
+        var sql = "INSERT INTO post(name) VALUES (?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setString(1, post.getName());
             prepStat.execute();
@@ -58,9 +60,10 @@ public class StorePost implements Store<Post> {
         }
     }
 
-   private void update(Post postUpd) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("UPDATE post SET name=(?) WHERE id=(?)")
+    private void update(Post postUpd) {
+        var sql = "UPDATE post SET name=(?) WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setString(1, postUpd.getName());
             prepStat.setInt(2, postUpd.getId());
@@ -73,8 +76,9 @@ public class StorePost implements Store<Post> {
     @Override
     public Post getById(int id) {
         Post rsl = new Post(0, "");
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM Post WHERE id=(?)")
+        var sql = "SELECT * FROM Post WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setInt(1, id);
             ResultSet resultSet = prepStat.executeQuery();
@@ -90,8 +94,9 @@ public class StorePost implements Store<Post> {
 
     @Override
     public void deleteById(int id) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("DELETE FROM post WHERE id=(?)")
+        var sql = "DELETE FROM post WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setInt(1, id);
             prepStat.executeQuery();

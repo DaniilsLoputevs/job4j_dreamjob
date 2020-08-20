@@ -91,7 +91,7 @@ public class CandidatesServlet extends HttpServlet {
             List<FileItem> items = upload.parseRequest(req);
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                    rsl = PsqlStoreImg.toBaseFile(item.getInputStream().readAllBytes());
+                    rsl = PsqlStoreImg.instOf().toBaseFile(item.getInputStream().readAllBytes());
                 }
             }
         } catch (FileUploadException e) {

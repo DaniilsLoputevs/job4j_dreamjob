@@ -21,14 +21,15 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${images}" var="image" varStatus="status">
+        <jsp:useBean id="imagesIds" scope="request" type="java.util.List"/>
+        <c:forEach items="${imagesIds}" var="imgId" varStatus="status">
             <tr valign="top">
                 <td>
-                    <a href="<c:url value='/image/download?name=${image}'/>">Download</a>
-                    <a href="<c:url value='/image/delete?name=${image}'/>">Delete</a>
+                    <a href="<c:url value='/image/download?imgId=${imgId}'/>">Download</a>
+                    <a href="<c:url value='/image/delete?imgId=${imgId}'/>">Delete</a>
                 </td>
                 <td>
-                    <img src="<c:url value='/image/download?name=${image}'/> " width="100px" height="100px"/>
+                    <img src="<c:url value='/image/download?imgId=${imgId}'/> " width="100px" height="100px"/>
                 </td>
             </tr>
         </c:forEach>
@@ -36,9 +37,9 @@
     </table>
 
     <h2>Upload image</h2>
-    <form action="<c:url value='/image/upload'/>" method="post" enctype="multipart/form-data">
+    <form action="<c:url value='/image/upload.do'/>" method="post" enctype="multipart/form-data">
         <div class="checkbox">
-            <input type="file" name="file">
+            <input type="file" name="image">
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>

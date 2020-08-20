@@ -5,22 +5,33 @@ import ru.job4j.dreamjob.psql.PsqlPoolConnect;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class PsqlStoreImg {
+
+    private static final class Lazy {
+        private static final PsqlStoreImg INST = new PsqlStoreImg();
+    }
+
+    public static PsqlStoreImg instOf() {
+        return PsqlStoreImg.Lazy.INST;
+    }
 
     /**
      * @param file - img file to bytes
      * @return - id in base.
      */
-    public static int toBaseFile(byte[] file) {
+    public int toBaseFile(byte[] file) {
         int rsl = -1;
-        try (var ps = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("INSERT INTO can_img(byte_arr_img) VALUES (?)",
-                        Statement.RETURN_GENERATED_KEYS)
+        var sql = "INSERT INTO can_img(byte_arr_img) VALUES (?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)
         ) {
-            ps.setBytes(1, file);
-            ps.execute();
-            try (ResultSet id = ps.getGeneratedKeys()) {
+            prepStat.setBytes(1, file);
+            prepStat.execute();
+            try (ResultSet id = prepStat.getGeneratedKeys()) {
                 if (id.next()) {
                     rsl = id.getInt(1);
                 }
@@ -31,10 +42,11 @@ public class PsqlStoreImg {
         return rsl;
     }
 
-    public static byte[] fromBaseById(int id) {
+    public byte[] fromBaseById(int id) {
         byte[] rsl = null;
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("SELECT * FROM can_img where id=(?)")
+        var sql = "SELECT * FROM can_img where id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setInt(1, id);
             ResultSet resultSet = prepStat.executeQuery();
@@ -53,9 +65,10 @@ public class PsqlStoreImg {
         return rsl;
     }
 
-    public static void deleteById(int id) {
-        try (var prepStat = PsqlPoolConnect.getPool().getConnection()
-                .prepareStatement("DELETE FROM can_img WHERE id=(?)")
+    public void deleteById(int id) {
+        var sql = "DELETE FROM can_img WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setInt(1, id);
             prepStat.execute();
@@ -64,27 +77,19 @@ public class PsqlStoreImg {
         }
     }
 
-    /* --- Private Things --- */
-
-//    private static byte[] bytes(File file) {
-//        byte[] rsl = null;
-//        try {
-//            rsl = FileUtils.readFileToByteArray(file);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return rsl;
-//    }
-
-    /* --- commented because it should be useful --- */
-
-//    private static File bytesToFile(String path, byte[] fileBytes) {
-//        File rsl = new File(path);
-//        try {
-//            FileUtils.writeByteArrayToFile(rsl, fileBytes);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return rsl;
-//    }
+    public Collection<Integer> getAllIIds() {
+        List<Integer> rsl = new ArrayList<>();
+        var sql = "SELECT  id FROM can_img";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql);
+        ) {
+            ResultSet resultSet = prepStat.executeQuery();
+            while (resultSet.next()) {
+                rsl.add(resultSet.getInt("id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rsl;
+    }
 }
