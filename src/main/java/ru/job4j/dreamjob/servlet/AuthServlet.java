@@ -1,6 +1,5 @@
 package ru.job4j.dreamjob.servlet;
 
-import ru.job4j.dreamjob.ahelptools.ConslLog;
 import ru.job4j.dreamjob.model.User;
 import ru.job4j.dreamjob.store.psql.StoreUser;
 
@@ -49,8 +48,8 @@ public class AuthServlet extends HttpServlet {
             var temp = StoreUser.instOf().getByEmail(email);
             if (checkUser(temp)) {
                 sessionSetUser(session, temp);
-                var deb = session.getAttribute("user");
-                ConslLog.log("Auth Servlet - deb: ", deb);
+//                var deb = session.getAttribute("user");
+//                ConslLog.log("Auth Servlet - deb: ", deb);
                 return true;
             }
         }
