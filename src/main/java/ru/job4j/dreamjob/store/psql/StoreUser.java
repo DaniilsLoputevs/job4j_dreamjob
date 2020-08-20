@@ -20,7 +20,7 @@ public class StoreUser implements Store<User> {
     }
 
     @Override
-    public Collection<User> findAll() {
+    public Collection<User> getAll() {
         List<User> users = new ArrayList<>();
         try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM \"user\"")
@@ -51,7 +51,7 @@ public class StoreUser implements Store<User> {
         }
     }
 
-    public User findByEmail(String email) {
+    public User getByEmail(String email) {
         User rsl = new User(0, "", "", "");
         try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM \"user\" WHERE email=(?)")
@@ -126,7 +126,7 @@ public class StoreUser implements Store<User> {
     }
 
     @Override
-    public User findById(int id) {
+    public User getById(int id) {
         throw new UnsupportedOperationException("Dont't realize this thing.");
     }
 

@@ -32,7 +32,7 @@ public class CandidatesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ConslLog.log("Can Servlet - GET Start");
-        req.setAttribute("candidates", StoreCandidate.instOf().findAll());
+        req.setAttribute("candidates", StoreCandidate.instOf().getAll());
         req.setAttribute("user", req.getSession().getAttribute("user"));
 
         ConslLog.log("Can Servlet - GET Finish");
@@ -101,7 +101,7 @@ public class CandidatesServlet extends HttpServlet {
     }
 
     private void updCandidate(HttpServletRequest req, int canId, String newName, int imgId) {
-        Candidate temp = StoreCandidate.instOf().findById(canId);
+        Candidate temp = StoreCandidate.instOf().getById(canId);
 
 //        ConslLog.log("UPD");
 //        ConslLog.log("BEFORE");

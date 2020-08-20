@@ -25,7 +25,7 @@ public class RegServlet extends HttpServlet {
     }
 
     /**
-     * submit reg user from reg.jps
+     * processing reg user from reg.jps
      * <p>
      * name : String - user's name(text from input).
      * email : String - user's email(text from input).

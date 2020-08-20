@@ -25,7 +25,7 @@ public class CandidateDeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         int id = Integer.parseInt(req.getParameter("id"));
-        Candidate can = StoreCandidate.instOf().findById(id);
+        Candidate can = StoreCandidate.instOf().getById(id);
 
         PsqlStoreImg.deleteById(can.getImgId());
         StoreCandidate.instOf().deleteById(id);

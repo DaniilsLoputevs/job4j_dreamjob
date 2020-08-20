@@ -12,7 +12,7 @@ import java.io.IOException;
 public class PostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("posts", StorePost.instOf().findAll());
+        req.setAttribute("posts", StorePost.instOf().getAll());
         req.setAttribute("user", req.getSession().getAttribute("user"));
         req.getRequestDispatcher("posts.jsp").forward(req, resp);
     }

@@ -20,7 +20,7 @@ public class StoreCandidate implements Store<Candidate> {
     }
 
     @Override
-    public Collection<Candidate> findAll() {
+    public Collection<Candidate> getAll() {
         List<Candidate> candidates = new ArrayList<>();
         ConslLog.log("str1");
         try (var prepStat = PsqlPoolConnect.getPool().getConnection()
@@ -97,7 +97,7 @@ public class StoreCandidate implements Store<Candidate> {
     }
 
     @Override
-    public Candidate findById(int id) {
+    public Candidate getById(int id) {
         Candidate rsl = new Candidate(0, "");
         try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM candidate WHERE id=(?)")

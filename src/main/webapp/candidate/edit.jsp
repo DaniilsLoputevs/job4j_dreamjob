@@ -30,7 +30,7 @@
     String reqId = request.getParameter("id");
     Candidate can = new Candidate(0, "");
     if (reqId != null) {
-        can = StoreCandidate.instOf().findById(Integer.parseInt(reqId));
+        can = StoreCandidate.instOf().getById(Integer.parseInt(reqId));
     }
 %>
 <div class="container">

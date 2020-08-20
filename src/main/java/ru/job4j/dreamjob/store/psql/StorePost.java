@@ -19,7 +19,7 @@ public class StorePost implements Store<Post> {
     }
 
     @Override
-    public Collection<Post> findAll() {
+    public Collection<Post> getAll() {
         List<Post> posts = new ArrayList<>();
         try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM post")
@@ -71,7 +71,7 @@ public class StorePost implements Store<Post> {
     }
 
     @Override
-    public Post findById(int id) {
+    public Post getById(int id) {
         Post rsl = new Post(0, "");
         try (var prepStat = PsqlPoolConnect.getPool().getConnection()
                 .prepareStatement("SELECT * FROM Post WHERE id=(?)")

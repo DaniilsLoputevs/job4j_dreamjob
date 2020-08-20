@@ -27,7 +27,8 @@ public class AuthServlet extends HttpServlet {
      * auth fail >>> login.jsp (reload page)
      */
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
         if (authCheck(req)) {
             resp.sendRedirect(req.getContextPath() + "/post/posts.do");
         } else {
@@ -45,7 +46,7 @@ public class AuthServlet extends HttpServlet {
             sessionSetUser(session, new User(0, "Admin", email, password));
             return true;
         } else {
-            var temp = StoreUser.instOf().findByEmail(email);
+            var temp = StoreUser.instOf().getByEmail(email);
             if (checkUser(temp)) {
                 sessionSetUser(session, temp);
                 var deb = session.getAttribute("user");

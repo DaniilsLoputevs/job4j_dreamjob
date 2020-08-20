@@ -7,11 +7,11 @@ import java.util.Collection;
  */
 public interface Store<I> {
 
-    Collection<I> findAll();
+    Collection<I> getAll();
 
     void save(I item);
 
-    I findById(int id);
+    I getById(int id);
 
     void deleteById(int id);
 }

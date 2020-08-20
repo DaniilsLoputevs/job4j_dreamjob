@@ -30,7 +30,7 @@
     String id = request.getParameter("id");
     Post post = new Post(0, "");
     if (id != null) {
-        post = StorePost.instOf().findById(Integer.parseInt(id));
+        post = StorePost.instOf().getById(Integer.parseInt(id));
     }
 %>
 <div class="container">
