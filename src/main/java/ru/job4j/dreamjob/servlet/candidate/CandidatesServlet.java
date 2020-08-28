@@ -41,7 +41,7 @@ public class CandidatesServlet extends HttpServlet {
 
     /**
      * submit edit one candidate.
-     * realise 2 buttons: save name & save img.
+     * realise 2 buttons: save: name, img, city.
      * <p>
      * id : int - candidate's id.
      * name : String - text from input, new candidate's name.
@@ -60,16 +60,16 @@ public class CandidatesServlet extends HttpServlet {
 //        ConslLog.log("req Param - name", req.getParameter("name"));
 //        ConslLog.log("Can Servlet");
 
-        ServletFileUpload upload = createDefaultFactory();
 
         int canId = Integer.parseInt(req.getParameter("id"));
         String newName = req.getParameter("name");
         int imgId = -1;
+
         // if >>> jsp - form enctype="multipart/form-data"
         if (newName == null) {
-            imgId = loadImg(req, upload);
+            imgId = loadImg(req, createDefaultFactory());
         }
-        updCandidate(req, canId, newName, imgId);
+        updCandidate(canId, newName, imgId);
 
 //        ConslLog.log("Can Servlet - Finish");
 
@@ -100,7 +100,7 @@ public class CandidatesServlet extends HttpServlet {
         return rsl;
     }
 
-    private void updCandidate(HttpServletRequest req, int canId, String newName, int imgId) {
+    private void updCandidate(int canId, String newName, int imgId) {
         Candidate temp = StoreCandidate.instOf().getById(canId);
 
 //        ConslLog.log("UPD");

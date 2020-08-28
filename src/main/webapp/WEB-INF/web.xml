@@ -80,6 +80,15 @@
         <servlet-name>RegServlet</servlet-name>
         <url-pattern>/reg.do</url-pattern>
     </servlet-mapping>
+    <!-- ajax script Servlets-->
+    <servlet>
+        <servlet-name>CityServlet</servlet-name>
+        <servlet-class>ru.job4j.dreamjob.servlet.ajax.CityServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CityServlet</servlet-name>
+        <url-pattern>/city.get</url-pattern>
+    </servlet-mapping>
 
 
     <!-- image example servlets -->

@@ -21,8 +21,125 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<%--    <link rel="stylesheet" href="/resources/demos/style.css">--%>
 
     <title>Работа мечты</title>
+
+    <script>
+        $( function() {
+            var availableTags = [
+                "ActionScript",
+                "AppleScript",
+                "Asp",
+                "BASIC",
+                "C",
+                "C++",
+                "Clojure",
+                "COBOL",
+                "ColdFusion",
+                "Erlang",
+                "Fortran",
+                "Groovy",
+                "Haskell",
+                "Java",
+                "JavaScript",
+                "Lisp",
+                "Perl",
+                "PHP",
+                "Python",
+                "Ruby",
+                "Scala",
+                "Scheme"
+            ];
+            $( "#tags" ).autocomplete({
+                source: availableTags
+            });
+        } );
+
+        function getAllCities() {
+            $.ajax({
+                type: 'GET',
+                crossdomain: true,
+                url: getContextPath() + '/city.get',
+                // url: 'http://localhost:8080/job4j_dreamjob/city.get',
+                // data: {
+                //     name: $('#exampleInputEmail1').val()
+                // },
+                // dataType: 'text'
+            }).done(data => {
+                typeOf(data, "data")
+                console.log('single line');
+                // console.log('data.value().length: ' + data.value().length);
+                console.log('data.length: ' + data.length);
+                console.log('data: ' + data);
+                // var temp = JSON.parse(data);
+
+                // console.log('temp: ' + temp);
+                console.log('forEach');
+                for (let i = 0; i < data.length; i++) {
+                    console.log(i + " : " + data[i]);
+                }
+
+                let aaa = Object.values(data)
+                typeOf(aaa, "aaa")
+                console.log("aaa: " + aaa);
+
+                // console.log(Object.values(data));
+            }).fail(err => {
+                console.log("ERROR!!! - see console")
+                console.log(err)
+                alert(err);
+            });
+            return false;
+        }
+
+        function typeOf(something, varName) {
+            let rsl = "\"" + varName + "\"" + " is type of: ";
+            if (typeof something === "undefined") {
+                rsl += "undefined";
+            }
+            if (typeof something === "boolean") {
+                rsl += "boolean";
+            }
+            if (typeof something === "number") {
+                rsl += "number";
+            }
+            if (typeof something === "string") {
+                rsl += "string";
+            }
+            if (typeof something === "bigint") {
+                rsl += "bigint";
+            }
+            if (typeof something === "symbol") {
+                rsl += "symbol";
+            }
+            if (typeof something === "object") {
+                rsl += "object";
+            }
+            if (typeof something === "function") {
+                rsl += "function";
+            }
+            console.log(rsl)
+        }
+        function getContextPath() {
+            return location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
+        }
+
+        <%--        function validate() {--%>
+        <%--            var login = $("#usr").val();--%>
+        <%--            var password = $("#pwd").val();--%>
+        <%--            if (login === '' || password === '') {--%>
+        <%--                alert("please enter right data.")--%>
+        <%--            } else {--%>
+        <%--                alert("all right")--%>
+        <%--            }--%>
+        <%--            return true;--%>
+        <%--        }--%>
+    </script>
+
 </head>
 
 <body>
@@ -70,6 +187,15 @@
         </ul>
     </div>
 
+    <div class="ui-widget">
+        <label for="tags">Tags: </label>
+        <input id="tags" autocomplete="off">
+    </div>
+
+    <div class="ajax-btn">
+        <input id="ajax-input" onchange="return getAllCities();">
+    </div>
+
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
@@ -87,10 +213,19 @@
                 <c:set var="id" scope="session" value="<%=can.getId()%>"/>
                 <c:set var="name" scope="session" value="<%=can.getName()%>"/>
                 <c:set var="imgId" scope="session" value="<%=can.getImgId()%>"/>
+                <c:set var="imgId" scope="session" value="<%=can.getImgId()%>"/>
                 <%-- name --%>
                 <form action="<c:url value='/candidate/candidates.do?id=${id}'/>" method="post"
                       enctype="application/x-www-form-urlencodeda">
                     <label>Имя
+                        <input type="text" class="form-control" name="name" value="${name}">
+                    </label>
+                    <button type="submit" class="btn btn-primary">Сохранить Имя</button>
+                </form>
+                <%-- city --%>
+                <form action="<c:url value='/candidate/candidates.do?id=${id}'/>" method="post"
+                      enctype="application/x-www-form-urlencodeda">
+                    <label> Город
                         <input type="text" class="form-control" name="name" value="${name}">
                     </label>
                     <button type="submit" class="btn btn-primary">Сохранить Имя</button>

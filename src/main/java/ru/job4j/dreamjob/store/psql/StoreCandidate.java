@@ -40,7 +40,8 @@ public class StoreCandidate implements Store<Candidate> {
                     candidates.add(new Candidate(
                             it.getInt("id"),
                             it.getString("name"),
-                            it.getInt("img_id")
+                            it.getInt("img_id"),
+                            it.getInt("city_id")
                     ));
 //                    ConslLog.log("loop - finish", i++);
                 }

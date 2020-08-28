@@ -8,11 +8,17 @@ CREATE TABLE IF NOT EXISTS can_img
     id           SERIAL PRIMARY KEY,
     byte_arr_img bytea
 );
+CREATE TABLE IF NOT EXISTS city
+(
+    id   SERIAL PRIMARY KEY,
+    name varchar(200)
+);
 CREATE TABLE IF NOT EXISTS candidate
 (
     id       SERIAL PRIMARY KEY,
     name     TEXT,
-    photo_id INT references can_img (id)
+    photo_id INT references can_img (id),
+    city_id  INT references city (id)
 );
 CREATE TABLE IF NOT EXISTS "user"
 (

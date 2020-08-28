@@ -1,5 +1,7 @@
 package ru.job4j.dreamjob.ahelptools;
 
+import ru.job4j.dreamjob.store.psql.PsqlStoreCity;
+
 /**
  * manual tool - not for production.
  */
@@ -11,7 +13,7 @@ public class ManualExperiment {
 //        var targetPath = "C:\\Danik\\Projects\\job4j_dreamjob\\src\\main\\java\\ru\\job4j\\dreamjob\\target.jpg";
 //        var imgFile = new File(sourcePath);
 
-
+        PsqlStoreCity.instOf().getAll().forEach(System.out::println);
     }
 
     /* manual tool - not for production */
