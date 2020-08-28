@@ -31,4 +31,39 @@ public class PsqlStoreCity {
         }
         return rsl;
     }
+
+    public int getIdByName(String name) {
+        int rsl = -1;
+        var sql = "SELECT id FROM city where name=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
+        ) {
+            prepStat.setString(1, name);
+            try (ResultSet it = prepStat.executeQuery()) {
+                while (it.next()) {
+                    rsl = it.getInt("id");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rsl;
+    }
+
+    public String getById(int id) {
+        String rsl = "";
+        var sql = "SELECT * FROM city WHERE id=(?)";
+        try (var connect = PsqlPoolConnect.getPool().getConnection();
+             var prepStat = connect.prepareStatement(sql)
+        ) {
+            prepStat.setInt(1, id);
+            ResultSet resultSet = prepStat.executeQuery();
+            while (resultSet.next()) {
+                rsl = resultSet.getString("name");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rsl;
+    }
 }

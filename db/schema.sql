@@ -26,4 +26,9 @@ CREATE TABLE IF NOT EXISTS "user"
     name     varchar(150),
     email    varchar(100),
     password varchar(30)
-)
+);
+
+INSERT INTO can_img(id, byte_arr_img)
+VALUES (0, null);
+INSERT INTO city(id, name)
+VALUES (0, null);

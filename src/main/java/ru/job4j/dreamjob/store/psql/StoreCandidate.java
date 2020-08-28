@@ -1,6 +1,5 @@
 package ru.job4j.dreamjob.store.psql;
 
-import ru.job4j.dreamjob.ahelptools.ConslLog;
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.psql.PsqlPoolConnect;
 import ru.job4j.dreamjob.store.Store;
@@ -31,12 +30,13 @@ public class StoreCandidate implements Store<Candidate> {
             try (ResultSet it = prepStat.executeQuery()) {
 //                ConslLog.log("str3");
 //                ConslLog.log("before while");
-                int i = 0;
+//                int i = 0;
                 while (it.next()) {
-                    ConslLog.log("loop", i);
-                    ConslLog.log("id", it.getInt("id"));
-                    ConslLog.log("name", it.getString("name"));
-                    ConslLog.log("img_id", it.getInt("img_id"));
+//                    ConslLog.log("loop", i);
+//                    ConslLog.log("id", it.getInt("id"));
+//                    ConslLog.log("name", it.getString("name"));
+//                    ConslLog.log("img_id", it.getInt("img_id"));
+//                    ConslLog.log("city_id", it.getInt("city_id"));
                     candidates.add(new Candidate(
                             it.getInt("id"),
                             it.getString("name"),
@@ -63,7 +63,7 @@ public class StoreCandidate implements Store<Candidate> {
     }
 
     private void create(Candidate candidate) {
-        var sql = "INSERT INTO candidate(name, img_id) VALUES (?, ?)";
+        var sql = "INSERT INTO candidate(name, img_id, city_id) VALUES (?, ?, ?)";
         try (var connect = PsqlPoolConnect.getPool().getConnection();
              var prepStat = connect.prepareStatement(sql)
         ) {
@@ -73,6 +73,7 @@ public class StoreCandidate implements Store<Candidate> {
 
             prepStat.setString(1, candidate.getName());
             prepStat.setInt(2, candidate.getImgId());
+            prepStat.setInt(3, candidate.getCityId());
             prepStat.execute();
             try (ResultSet id = prepStat.getGeneratedKeys()) {
                 if (id.next()) {
@@ -85,13 +86,14 @@ public class StoreCandidate implements Store<Candidate> {
     }
 
     private void update(Candidate candidate) {
-        var sql = "UPDATE candidate SET name=(?), img_id=(?) WHERE id=(?)";
+        var sql = "UPDATE candidate SET name=(?), img_id=(?), city_id=(?) WHERE id=(?)";
         try (var connect = PsqlPoolConnect.getPool().getConnection();
              var prepStat = connect.prepareStatement(sql)
         ) {
             prepStat.setString(1, candidate.getName());
             prepStat.setInt(2, candidate.getImgId());
-            prepStat.setInt(3, candidate.getId());
+            prepStat.setInt(3, candidate.getCityId());
+            prepStat.setInt(4, candidate.getId());
             prepStat.execute();
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,7 +102,7 @@ public class StoreCandidate implements Store<Candidate> {
 
     @Override
     public Candidate getById(int id) {
-        Candidate rsl = new Candidate(0, "");
+        Candidate rsl = new Candidate(0, "", 0, 0);
         var sql = "SELECT * FROM candidate WHERE id=(?)";
         try (var connect = PsqlPoolConnect.getPool().getConnection();
              var prepStat = connect.prepareStatement(sql)
@@ -111,6 +113,7 @@ public class StoreCandidate implements Store<Candidate> {
                 rsl.setId(resultSet.getInt("id"));
                 rsl.setName(resultSet.getString("name"));
                 rsl.setImgId(resultSet.getInt("img_id"));
+                rsl.setCityId(resultSet.getInt("city_id"));
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import ru.job4j.dreamjob.ahelptools.ConslLog;
 import ru.job4j.dreamjob.model.Candidate;
+import ru.job4j.dreamjob.store.psql.PsqlStoreCity;
 import ru.job4j.dreamjob.store.psql.PsqlStoreImg;
 import ru.job4j.dreamjob.store.psql.StoreCandidate;
 
@@ -45,6 +46,7 @@ public class CandidatesServlet extends HttpServlet {
      * <p>
      * id : int - candidate's id.
      * name : String - text from input, new candidate's name.
+     * city : String - text from input, new candidate's city.
      * <p>
      * goto: doGet -> candidates.jsp
      */
@@ -64,12 +66,14 @@ public class CandidatesServlet extends HttpServlet {
         int canId = Integer.parseInt(req.getParameter("id"));
         String newName = req.getParameter("name");
         int imgId = -1;
+        String city =  req.getParameter("city");
+        int cityId = PsqlStoreCity.instOf().getIdByName(city);
 
         // if >>> jsp - form enctype="multipart/form-data"
         if (newName == null) {
             imgId = loadImg(req, createDefaultFactory());
         }
-        updCandidate(canId, newName, imgId);
+        updCandidate(canId, newName, imgId, cityId);
 
 //        ConslLog.log("Can Servlet - Finish");
 
@@ -100,7 +104,7 @@ public class CandidatesServlet extends HttpServlet {
         return rsl;
     }
 
-    private void updCandidate(int canId, String newName, int imgId) {
+    private void updCandidate(int canId, String newName, int imgId, int cityId) {
         Candidate temp = StoreCandidate.instOf().getById(canId);
 
 //        ConslLog.log("UPD");
@@ -118,6 +122,10 @@ public class CandidatesServlet extends HttpServlet {
         }
         if (imgId > 0) {
             temp.setImgId(imgId);
+            change = true;
+        }
+        if (cityId > 0) {
+            temp.setCityId(cityId);
             change = true;
         }
         if (change) {

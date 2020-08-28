@@ -5,8 +5,8 @@ import java.util.Objects;
 public class Candidate {
     private int id;
     private String name;
-    private int imgId = -1;
-    private int cityId = -1;
+    private int imgId = 0;
+    private int cityId = 0;
 
     public Candidate(int id, String name) {
         this.id = id;

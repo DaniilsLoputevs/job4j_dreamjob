@@ -1,4 +1,5 @@
 <%@ page import="ru.job4j.dreamjob.model.Candidate" %>
+<%@ page import="ru.job4j.dreamjob.store.psql.PsqlStoreCity" %>
 <%@ page import="ru.job4j.dreamjob.store.psql.StoreCandidate" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -24,120 +25,87 @@
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<%--    <link rel="stylesheet" href="/resources/demos/style.css">--%>
 
     <title>Работа мечты</title>
 
-    <script>
-        $( function() {
-            var availableTags = [
-                "ActionScript",
-                "AppleScript",
-                "Asp",
-                "BASIC",
-                "C",
-                "C++",
-                "Clojure",
-                "COBOL",
-                "ColdFusion",
-                "Erlang",
-                "Fortran",
-                "Groovy",
-                "Haskell",
-                "Java",
-                "JavaScript",
-                "Lisp",
-                "Perl",
-                "PHP",
-                "Python",
-                "Ruby",
-                "Scala",
-                "Scheme"
-            ];
-            $( "#tags" ).autocomplete({
-                source: availableTags
-            });
-        } );
-
-        function getAllCities() {
+    <script type="text/javascript">
+        $(function () {
+            var rsl = [];
             $.ajax({
                 type: 'GET',
                 crossdomain: true,
                 url: getContextPath() + '/city.get',
-                // url: 'http://localhost:8080/job4j_dreamjob/city.get',
-                // data: {
-                //     name: $('#exampleInputEmail1').val()
-                // },
-                // dataType: 'text'
             }).done(data => {
-                typeOf(data, "data")
-                console.log('single line');
-                // console.log('data.value().length: ' + data.value().length);
-                console.log('data.length: ' + data.length);
-                console.log('data: ' + data);
-                // var temp = JSON.parse(data);
-
-                // console.log('temp: ' + temp);
-                console.log('forEach');
                 for (let i = 0; i < data.length; i++) {
-                    console.log(i + " : " + data[i]);
+                    rsl.push(data[i]);
                 }
-
-                let aaa = Object.values(data)
-                typeOf(aaa, "aaa")
-                console.log("aaa: " + aaa);
-
-                // console.log(Object.values(data));
             }).fail(err => {
+                alert("ERROR!!! - see console")
                 console.log("ERROR!!! - see console")
                 console.log(err)
-                alert(err);
             });
-            return false;
-        }
 
-        function typeOf(something, varName) {
+            $("#city").autocomplete({
+                source: rsl
+            });
+        });
+
+        // Debug
+        function typeOf(variable, varName) {
             let rsl = "\"" + varName + "\"" + " is type of: ";
-            if (typeof something === "undefined") {
+            if (typeof variable === "undefined") {
                 rsl += "undefined";
             }
-            if (typeof something === "boolean") {
+            if (typeof variable === "boolean") {
                 rsl += "boolean";
             }
-            if (typeof something === "number") {
+            if (typeof variable === "number") {
                 rsl += "number";
             }
-            if (typeof something === "string") {
+            if (typeof variable === "string") {
                 rsl += "string";
             }
-            if (typeof something === "bigint") {
+            if (typeof variable === "bigint") {
                 rsl += "bigint";
             }
-            if (typeof something === "symbol") {
+            if (typeof variable === "symbol") {
                 rsl += "symbol";
             }
-            if (typeof something === "object") {
+            if (typeof variable === "object") {
                 rsl += "object";
             }
-            if (typeof something === "function") {
+            if (typeof variable === "function") {
                 rsl += "function";
+            }
+            if (Array.isArray(variable) === true) {
+                rsl += "array";
             }
             console.log(rsl)
         }
+
         function getContextPath() {
             return location.pathname.substring(0, window.location.pathname.indexOf("/", 2));
         }
 
-        <%--        function validate() {--%>
-        <%--            var login = $("#usr").val();--%>
-        <%--            var password = $("#pwd").val();--%>
-        <%--            if (login === '' || password === '') {--%>
-        <%--                alert("please enter right data.")--%>
-        <%--            } else {--%>
-        <%--                alert("all right")--%>
-        <%--            }--%>
-        <%--            return true;--%>
-        <%--        }--%>
+        function validate() {
+            const name = $("#name").val();
+            const city = $("#city").val();
+            if (name === '' || city === '') {
+                alert("please enter right data.")
+            } else {
+                alert("all right")
+            }
+            return false;
+        }
+
+        $(function () {
+            $("#name-btn-form").click(() => {
+                validate();
+            });
+            $("#city-btn-form").click(() => {
+                validate();
+            });
+        })
     </script>
 
 </head>
@@ -187,14 +155,13 @@
         </ul>
     </div>
 
-    <div class="ui-widget">
-        <label for="tags">Tags: </label>
-        <input id="tags" autocomplete="off">
-    </div>
-
-    <div class="ajax-btn">
-        <input id="ajax-input" onchange="return getAllCities();">
-    </div>
+<%--    <div class="ui-widget">--%>
+<%--        <label for="cities">Tags: </label>--%>
+<%--        <input id="cities"--%>
+<%--        &lt;%&ndash;               autocomplete="off"&ndash;%&gt;--%>
+<%--        &lt;%&ndash;               onclick="return getAllCities()"&ndash;%&gt;--%>
+<%--        >--%>
+<%--    </div>--%>
 
     <div class="row">
         <div class="card" style="width: 100%">
@@ -213,22 +180,23 @@
                 <c:set var="id" scope="session" value="<%=can.getId()%>"/>
                 <c:set var="name" scope="session" value="<%=can.getName()%>"/>
                 <c:set var="imgId" scope="session" value="<%=can.getImgId()%>"/>
-                <c:set var="imgId" scope="session" value="<%=can.getImgId()%>"/>
+                <c:set var="city" scope="session"
+                       value="<%=PsqlStoreCity.instOf().getById(can.getCityId())%>"/>
                 <%-- name --%>
                 <form action="<c:url value='/candidate/candidates.do?id=${id}'/>" method="post"
                       enctype="application/x-www-form-urlencodeda">
                     <label>Имя
-                        <input type="text" class="form-control" name="name" value="${name}">
+                        <input id="name" type="text" class="form-control" name="name" value="${name}">
                     </label>
-                    <button type="submit" class="btn btn-primary">Сохранить Имя</button>
+                    <button id="name-btn-form" type="submit" class="btn btn-primary">Сохранить Имя</button>
                 </form>
                 <%-- city --%>
                 <form action="<c:url value='/candidate/candidates.do?id=${id}'/>" method="post"
                       enctype="application/x-www-form-urlencodeda">
                     <label> Город
-                        <input type="text" class="form-control" name="name" value="${name}">
+                        <input id="city" type="text" class="form-control" name="city" value="${city}">
                     </label>
-                    <button type="submit" class="btn btn-primary">Сохранить Имя</button>
+                    <button id="city-btn-form" type="submit" class="btn btn-primary">Сохранить Город</button>
                 </form>
                 <%-- image --%>
                 <c:if test="${id > 0}">
@@ -245,15 +213,17 @@
                 <form action="<c:url value='/candidate/candidates.do?id=${id}'/>" method="post"
                       enctype="multipart/form-data">
                     <h3>Загрузить изображение</h3>
-                    <input type="file" name="img">
+                    <input id="image" type="file" name="img">
                     <button type="submit" class="btn btn-primary">Сохранить Картинку</button>
                 </form>
+                <c:if test="${id > 0}">
                 <%-- delete candidate --%>
                 <form action="<c:url value='/candidate/delete.do?id=${id}'/>" method="post"
                       enctype="application/x-www-form-urlencodeda">
                     <h3>Осторожно!</h3>
                     <button type="submit" class="btn btn-primary">Удалить кандидата</button>
                 </form>
+                </c:if>
 
             </div>
         </div>
