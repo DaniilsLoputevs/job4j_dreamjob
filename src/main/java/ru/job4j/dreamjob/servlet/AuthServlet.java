@@ -45,19 +45,13 @@ public class AuthServlet extends HttpServlet {
             sessionSetUser(session, new User(0, "Admin", email, password));
             return true;
         } else {
-            var temp = StoreUser.instOf().getByEmail(email);
-            if (checkUser(temp)) {
-                sessionSetUser(session, temp);
-//                var deb = session.getAttribute("user");
-//                ConslLog.log("Auth Servlet - deb: ", deb);
+            var user = StoreUser.instOf().getByEmail(email);
+            if (checkUser(user)) {
+                sessionSetUser(session, user);
                 return true;
             }
         }
         return false;
-    }
-
-    private void sessionSetUser(HttpSession sc, User user) {
-        sc.setAttribute("user", user);
     }
 
     private boolean checkUser(User user) {
@@ -65,4 +59,9 @@ public class AuthServlet extends HttpServlet {
                 && !user.getPassword().equalsIgnoreCase("");
     }
 
+    private void sessionSetUser(HttpSession sc, User user) {
+        sc.setAttribute("user", user);
+//        var logTemp = sc.getAttribute("user"); // in mock test == null
+//        ConslLog.log("Auth user", logTtemp);
+    }
 }
